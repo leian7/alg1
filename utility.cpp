@@ -33,14 +33,91 @@ struct Coordinate {
 	float y;
 };
 
-/* Coordinate* merge() {
+void merge_x(Coordinate *points_arr, Coordinate *new_arr, int start, int mid, int end) {
+	int left_iter = start;
+	int right_iter = mid + 1;
+	int combo_iter = start;
+	int i;
+	while ((left_iter <= mid) && (right_iter <= end)) {
+		if (points_arr[left_iter].x <= points_arr[right_iter].x) {
+			new_arr[combo_iter] = points_arr[left_iter];
+			left_iter++;
+		}
+		else {
+			new_arr[combo_iter] = points_arr[right_iter];
+			right_iter++;
+		}
+		combo_iter++;
+	}
+	if (left_iter > mid) {
+		for (i = right_iter; i <= end; i++) {
+			new_arr[combo_iter] = points_arr[i];
+			combo_iter++;
+		}
+	}
+	else {
+		for (i = left_iter; i <= mid; i++) {
+			new_arr[combo_iter] = points_arr[i];
+			combo_iter++;
+		}
+	}
+	for (i = start; i <= end; i++) {
+		points_arr[i] = new_arr[i];
+	}
 }
 
-void merge_sort(Coordinate* points_arr, char c, int n, int start, int end) {
-	Coordinate *points_arr_left = new Coordinate[n/2];
-	Coordinate *points_arr_right = new Coordinate[n/2];
+void merge_sort_x(Coordinate *points_arr, Coordinate *new_arr, int start, int end) {
+	int mid;
+	if (start < end) {
+		mid = (start + end) / 2;
+		merge_sort_x(points_arr, new_arr, start, mid);
+		merge_sort_x(points_arr, new_arr, mid+1, end);
+		merge_x(points_arr, new_arr, start, mid, end);
+	}
+}
 
-} */	
+void merge_y(Coordinate *points_arr, Coordinate *new_arr, int start, int mid, int end) {
+	int left_iter = start;
+	int right_iter = mid + 1;
+	int combo_iter = start;
+	int i;
+	while ((left_iter <= mid) && (right_iter <= end)) {
+		if (points_arr[left_iter].y <= points_arr[right_iter].y) {
+			new_arr[combo_iter] = points_arr[left_iter];
+			left_iter++;
+		}
+		else {
+			new_arr[combo_iter] = points_arr[right_iter];
+			right_iter++;
+		}
+		combo_iter++;
+	}
+	if (left_iter > mid) {
+		for (i = right_iter; i <= end; i++) {
+			new_arr[combo_iter] = points_arr[i];
+			combo_iter++;
+		}
+	}
+	else {
+		for (i = left_iter; i <= mid; i++) {
+			new_arr[combo_iter] = points_arr[i];
+			combo_iter++;
+		}
+	}
+	for (i = start; i <= end; i++) {
+		points_arr[i] = new_arr[i];
+	}
+}
+
+void merge_sort_y(Coordinate *points_arr, Coordinate *new_arr, int start, int end) {
+	int mid;
+	if (start < end) {
+		mid = (start + end) / 2;
+		merge_sort_y(points_arr, new_arr, start, mid);
+		merge_sort_y(points_arr, new_arr, mid+1, end);
+		merge_y(points_arr, new_arr, start, mid, end);
+	}
+}	
 
 float find_min_dist(Coordinate* points_arr, int n){
 	int k=0;
@@ -60,9 +137,10 @@ float find_min_dist(Coordinate* points_arr, int n){
 		return min;
 }
 
-/*
+
 int main()
 {
+	/*
 	float minimum=0.0;
 	Coordinate* array = new Coordinate [1];
 	for(int i=0; i<1; i++){
@@ -74,8 +152,6 @@ int main()
 	for(int i=0; i<1; i++){
 		cout << " index" << i << " : " << "(" << array[i].x << "  " << array[i].y << ")" << endl;
 	}
-	delete[]array;
+	delete[]array; */
 	return 0;
-}
-*/
-	
+} 
