@@ -120,21 +120,42 @@ void merge_sort_y(Coordinate *points_arr, Coordinate *new_arr, int start, int en
 }	
 
 float find_min_dist(Coordinate* points_arr, int n){
-	int k=0;
-	float curr_min=0.0, min=0.0; 
-	float* arr = new float [n];
-	for(int i=0; i<n-1; i++){
-			for(int l=i+1; l<n; l++){
+	cout << "\nENTERED FIND MIN DIST FUNCT \n";
+	int k = 0;
+	float curr_min = 0.0, min = 0.0;
+	cout << " N in the find min dist " << n << endl;
+	float* arr;
 
+   	if (n == 2) {
+		arr	= new float[1];
+	}
+
+	else
+		arr = new float[n];
+
+	for (int i = 0; i < n-1; i++){
+		for (int l = i+1; l < n; l++){
+			cout << "TIME " << k << endl;
+			cout << "\n the two points passing in is : "<<points_arr[i].x <<"     "<< points_arr[i].y << endl;
+			cout << "\n the two points passing in is : "<<points_arr[l].x <<"     "<< points_arr[l].y << endl;
 			curr_min = sqrtf( (pow((points_arr[i].x - points_arr[l].x) , 2) + pow((points_arr[i].y - points_arr[l].y) , 2 )) );
 			arr[k] = curr_min;
+			cout << "arr[k] is " << arr[k]<< endl;
 			k++;			
-			}
 		}
+	}
+	if(n!=2){
 		sort(arr, arr+n);
-		min = arr[0];
-		delete[]arr;
-		return min;
+	}
+
+	/*for (int i =0; i<n; i++){
+		cout <<"this is the for loop after sort " <<arr[i] << endl;
+	}*/
+	min = arr[0];
+	cout <<"BEFORE RETURN"<< min << endl;
+	delete [] arr;	
+	cout << "after delete \n";
+	return min;
 }
 
 float find_L(Coordinate *points_arr, int n) {
@@ -152,19 +173,150 @@ float find_L(Coordinate *points_arr, int n) {
 void split_array(Coordinate *points_arr, Coordinate *points_arr_left, Coordinate *points_arr_right, int n, int L) {
 	int left_iter = 0;
 	int right_iter = 0;
-	for (int i = 0; i < n; i++) {
-		if (points_arr[i].x < L) {
+	if (n % 2 == 0) {
+		for (int i = 0; i < n/2; i++) {
 			points_arr_left[left_iter] = points_arr[i];
 			left_iter++;
 		}
-		else { // if points_arr[i].x >= L,
+		for (int i = n/2; i < n; i++) {
+			points_arr_right[right_iter] = points_arr[i];
+			right_iter++;
+		}
+	}
+	else { // if size of points_arr[i] is odd
+		for (int i = 0; i < n/2; i++) {
+			points_arr_left[left_iter] = points_arr[i];
+			left_iter++;
+		}
+		for (int i = n/2; i < n; i++) {
 			points_arr_right[right_iter] = points_arr[i];
 			right_iter++;
 		}
 	}
 }
 
-int main() {
+float closest_cross_pairs(Coordinate *M_y, float delta, int m) {
+	float d_m = delta;
+	float d;
+	int i, j;
+	for (i = 1; i < m-1; i++) {
+		j = i + 1;
+		while (abs((M_y[j].y - M_y[i].y)) <= delta && j <= m) {
+			cout << "\nM_y[i]: " << M_y[i].x << ", " << M_y[i].y << endl;
+			cout << "\nM_y[j]: " << M_y[j].x << ", " << M_y[j].y << endl;
+			d = sqrtf( (pow((M_y[i].x - M_y[j].x) , 2) + pow((M_y[i].y - M_y[j].y) , 2 )) );
+			cout << "\n d IS " << d << '\n';
+			d_m = min(d, d_m);
+			cout << "\n inside the while loop number i : " << i << endl;
+			cout << "\n in while loop number j : " << j << endl;
+			cout << "\n inside the while d_m IS " << d_m << '\n';
+			j++;
+		}
+	}
+	cout << "\nd_m IS " << d_m << '\n';
+	return d_m;
+}
+
+
+// MOVE THIS TO SOME NAIVE.CPP LATER
+float find_closest_pair(Coordinate *points_arr, int n) {
+	float L, delta_1, delta_2, delta, d_m, minimum;
+	int j = 0;
+	// We know size of M_y must be smaller than total num of points.
+
+	if (n <= 3) {
+		cout << "n is less than 3\n";
+		cout << " n in if statement "<< n << endl;
+		for (int i = 0; i < n; i++) {
+			cout << "point " << i << points_arr[i].x << ", " << points_arr[i].y << endl;
+		}
+		minimum = find_min_dist(points_arr, n);
+
+		cout << "find_min_dist " << minimum << endl;
+		return 	minimum ;
+	}
+
+	else {
+		cout << "n is greater than 3\n";
+		L = find_L(points_arr, n);
+		cout << "L is " << L << '\n';
+
+		Coordinate *points_arr_left = new Coordinate[n/2];
+		Coordinate *points_arr_right;
+		if (n % 2 == 0) {
+			cout << n << " is even\n";
+			points_arr_right = new Coordinate[n/2];
+		}
+		else {
+			cout << n << " is odd\n";
+			points_arr_right = new Coordinate[(n/2) + 1];
+		}
+
+		split_array(points_arr, points_arr_left, points_arr_right, n, L);
+
+		for (int a = 0; a<(n/2); a++){
+			cout << " array left side " << "(" << points_arr_left[a].x <<","<< points_arr_left[a].y << ")\n";
+
+		}
+		if (n % 2 == 0) {
+			for (int a = 0; a<(n/2); a++){
+				//cout << "\n\n IF \n\n";
+				cout << " array right side " << "(" << points_arr_right[a].x <<","<< points_arr_right[a].y << ")\n";
+	
+			}	
+		}
+		else {
+			for (int a = 0; a<(n/2 + 1); a++){
+				//cout << "\n\n ELSE \n\n";
+				cout << " array right side " << "(" << points_arr_right[a].x <<","<< points_arr_right[a].y << ")\n";
+	
+			}
+		}
+		delta_1 = find_closest_pair(points_arr_left, n/2);
+		if (n % 2 == 0)
+			delta_2 = find_closest_pair(points_arr_right, n/2);
+		else
+			delta_2 = find_closest_pair(points_arr_right, (n/2+1));
+
+		delta = min(delta_1, delta_2);
+		// Cout the numbers for deltas
+		cout << "delta_1 "<< delta_1 << " delta_2 " << delta_2 << " min delta " << delta << endl; 
+
+		int m = 0;
+
+		for (int i = 0; i < n; i++) {
+			if (abs(L - points_arr[i].x) <= delta) {
+				m++;
+			}
+		}
+		cout << "m is " << m << endl;
+		Coordinate *M_y = new Coordinate[m];
+		for (int i = 0; i < m; i++) {
+			if (abs(L - points_arr[i].x) <= delta) {
+				M_y[j] = points_arr[i];
+				cout << "\nM_y[j].x "<< M_y[j].x<< endl;
+				cout << "\nM_y[j].y "<< M_y[j].y<< endl;
+				j++;
+			}
+		}
+		for (int i = 0; i < m; i++) {
+			cout << "\nin PRINT M_y[" << i << "].x "<< M_y[i].x<< endl;
+			cout << "\nIN PRINT M_y[" << i << "].y "<< M_y[i].y<< endl;
+		}
+		cout << "j is "<< j << endl;
+		Coordinate *new_arr = new Coordinate[m];
+		merge_sort_y(M_y, new_arr, 0, m-1);
+		
+		d_m = closest_cross_pairs(new_arr, delta, m);
+	/*	delete[] new_arr;
+		delete[] points_arr_left;
+		delete[] points_arr_right; */
+
+		return d_m;
+	}
+}
+
+int main_1() {
 /*	float minimum=0.0;
 	Coordinate* array = new Coordinate [1];
 	for(int i=0; i<1; i++){
