@@ -137,11 +137,18 @@ float find_min_dist(Coordinate* points_arr, int n){
 		return min;
 }
 
+float find_L(Coordinate *points_arr, int n) {
+	float L;
+	Coordinate *new_arr = new Coordinate[n];
+	merge_sort_x(points_arr, new_arr, 0, n-1);
+	L = points_arr[n/2].x;
+	delete[] new_arr;
+	return L;
+}
 
-int main()
-{
-	/*
-	float minimum=0.0;
+
+int main() {
+/*	float minimum=0.0;
 	Coordinate* array = new Coordinate [1];
 	for(int i=0; i<1; i++){
 		array[i].x = i+i;	
@@ -154,4 +161,4 @@ int main()
 	}
 	delete[]array; */
 	return 0;
-} 
+}
