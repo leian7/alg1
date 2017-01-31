@@ -146,6 +146,23 @@ float find_L(Coordinate *points_arr, int n) {
 	return L;
 }
 
+/* Divides array of points into a left and right array according to a dividing
+ * line L
+ */
+void split_array(Coordinate *points_arr, Coordinate *points_arr_left, Coordinate *points_arr_right, int n, int L) {
+	int left_iter = 0;
+	int right_iter = 0;
+	for (int i = 0; i < n; i++) {
+		if (points_arr[i].x < L) {
+			points_arr_left[left_iter] = points_arr[i];
+			left_iter++;
+		}
+		else { // if points_arr[i].x >= L,
+			points_arr_right[right_iter] = points_arr[i];
+			right_iter++;
+		}
+	}
+}
 
 int main() {
 /*	float minimum=0.0;
