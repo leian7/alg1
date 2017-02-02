@@ -296,8 +296,6 @@ float find_closest_pair(Coordinate *points_arr, int n) {
 			delta_2 = find_closest_pair(points_arr_right, (n/2+1));
 
 		delta = min(delta_1, delta_2);
-		// Cout the numbers for deltas
-		//cout << "\ndelta_1 "<< delta_1 << " \ndelta_2 " << delta_2 <<"\ndelta " << delta << endl<<endl; 
 
 		int m = 0;
 
@@ -305,44 +303,23 @@ float find_closest_pair(Coordinate *points_arr, int n) {
 		for (int i = 0; i < n; i++) {
 			if (abs(L - points_arr[i].x) <= delta) {
 				m++;
-				//cout << "abs(L - points_arr[i].x) :  " << abs(L - points_arr[i].x) << endl; 
-				//cout << " L in abs(L - points_arr[i].x) " <<  L << endl;
-				//cout << " Index i "<< i <<" for points_arr[i].x : \n";
 			}
 		}
 		delete[] points_arr_left;
 		delete[] points_arr_right;
-		//cout << "m is " << m << endl;
 		Coordinate *M_y = new Coordinate[m];
 		for (int i = 0; i < n; i++) {
 			if (abs(L - points_arr[i].x) <= delta) {
 				M_y[j] = points_arr[i];
-				/*M_y[j].x = points_arr[i].x;
-				M_y[j].y = points_arr[i].y;*/
-				//cout << " L after counting size " <<  L << endl;
-				//cout << "\nM_y["<<j<<"].x "<< M_y[j].x<< endl;
-				//cout << "\nM_y["<<j<<"].y "<< M_y[j].y<< endl;
 				j++;
 			}
-		}/*
-		for (int i = 0; i < m; i++) {
-			cout << "\nM_y[" << i << "] ( "<< M_y[i].x <<" , "<< M_y[i].y<<" ) "<< endl;
 		}
-		cout << "j is "<< j << endl;
-		*/
 			
 		Coordinate *new_arr = new Coordinate[m];
 		
 		merge_sort_y(M_y, new_arr, 0, m-1);
 		
 		d_m = closest_cross_pairs(new_arr, delta, m);
-	/*	
-		 for (int i = 0; i < m; i++) {
-			cout << "\nnew_arr[" << i << "] ( "<< new_arr[i].x <<" , "<< new_arr[i].y <<" ) "<< endl;
-		}
-		for (int i = 0; i < m; i++) {
-			cout << "\nnew_arr[" << i << "] ( "<< new_arr[i].x <<" , "<< new_arr[i].y <<" ) "<< endl;
-		}*/
 		delete[] new_arr;
 		cout << "EXIT find_closest_pair\n";
 		delete[]M_y;	
@@ -395,40 +372,28 @@ int main() {
 		size++;
 	}
 	f.close();
-	//cout << " The lines of file: " << size << endl;
 	Coordinate *line = new Coordinate [size];
 	
-	//	c = 'a';
-	//	ifstream file;
-	//file.open("example.input");
 	f.open("example.input");
 
 	for(int i = 0; i < size; i++){
 		f >> line[i].x;
 		f >> line[i].y;	
-		//cout << " In the second time "<<endl;
 	}
-	/*for(int o = 0; o < size; o++){
-		cout << "( " << line[o].x <<" , "<< line[o].y << ")" << endl;
-	}*/
-	min = find_closest_pair(line, size);
-	//cout << " min is "<< min<<endl;
 	
-	line = sort_by_x_and_y(size,line);
+	min = find_closest_pair(line, size);
+	cout << " Minimum : " << min << endl;	
+	//line = sort_by_x_and_y(size,line);
 	set< pair<Coordinate,Coordinate> >::iterator it;
-	/*it = st.begin();
-	it++;
-	st.erase(it);*/
 	for(it=st.begin(); it!=st.end(); ++it){
 		//first is x, y is the second element in one point.
 		if(sqrtf( pow(it->first.x - it->second.x , 2) + pow(it->first.y - it->second.y , 2))!=min  ){
 			st.erase(it);
-			//cout<<"("<<it->first.x<<" "<<it->first.y<<")"<<"("<<it->second.x<<" "<<it->second.y<<")"<<endl;
 		}
 
 	}
-	for(it=st.begin(); it!=st.end(); it++){
-		cout<<"("<<it->first.x<<" "<<it->first.y<<")"<<"("<<it->second.x<<" "<<it->second.y<<")"<<endl;
+	for(int i=0; i < 1; i++){
+		cout<<"("<<st.begin()->first.x<<" "<<st.begin()->first.y<<")"<<"("<<st.begin()->second.x<<" "<<st.begin()->second.y<<")"<<endl;
 		count++;
 	}
 	delete[]line;
