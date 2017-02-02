@@ -1,7 +1,7 @@
-#include "function.cpp"
+#include "functions.cpp"
 
 int main(int argc, char* argv[]) {
-	int size = 0;
+	int size = 0, count = 0;
 	float min;
 	
 	ifstream f;
@@ -23,13 +23,12 @@ int main(int argc, char* argv[]) {
 	}
 	f.close();
 
-	merge_sort_x(sorted_x, new_arr, 0, n-1);
-	merge_sort_y(new_arr, sorted_y, 0, n-1);
+	merge_sort_x(sorted_x, new_arr, 0, size-1);
+	merge_sort_y(new_arr, sorted_y, 0, size-1);
 
-	min = find_closest_pair(sorted_x, size);
-/*	min = find_closest_pair(sorted_x, size);
-	cout << " Minimum : " << min << endl;	
-	//sorted_x = sort_by_x_and_y(size,sorted_x);
+	min = enhance_closest_pair(sorted_x,sorted_y, size);
+
+	cout << "Minimum : "<< min << endl;
 	set< pair<Coordinate,Coordinate> >::iterator it;
 	for(it=st.begin(); it!=st.end(); ++it){
 		//first is x, y is the second element in one point.
@@ -41,7 +40,7 @@ int main(int argc, char* argv[]) {
 	for(int i=0; i < 1; i++){
 		cout<<"("<<st.begin()->first.x<<" "<<st.begin()->first.y<<")"<<"("<<st.begin()->second.x<<" "<<st.begin()->second.y<<")"<<endl;
 		count++;
-	} */
+	} 
 	delete[]sorted_x;
 	return 0;
 }
