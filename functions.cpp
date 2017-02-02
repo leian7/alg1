@@ -2,7 +2,7 @@
  * versions of the closest-pair algorithms. */
 
 /* list of var names
- * find_closest_pair
+ * find_enhance_closest_pair
  * points_arr
  * n  <-- length of arr
  * find_min_dist
@@ -36,10 +36,6 @@ struct Coordinate {
 inline bool operator<(const Coordinate& lhs, const Coordinate& rhs){
 		return lhs.x <= rhs.x ;
 }
-/*
-inline bool operator==(const Coordinate& lhs, const Coordinate& rhs){
-		return (lhs++).x == lhs.x && lhs.y == (lhs++).y && (rhs++).x == rhs.x && (rhs++).y == rhs.y;
-}*/
 
 set< pair<Coordinate,Coordinate> > st;
 void make_pair(pair<Coordinate,Coordinate>, pair<Coordinate, Coordinate>);// set's elts are pairs of coors
@@ -131,10 +127,8 @@ void merge_sort_y(Coordinate *points_arr, Coordinate *new_arr, int start, int en
 }	
 
 float find_min_dist(Coordinate* points_arr, int n){
-	cout << "\nENTERED FIND MIN DIST FUNCT \n";
 	int k = 0;
 	float curr_min = 0.0, min = 0.0;
-	//cout << " total number N passed in " << n << endl;
 	float* arr;
 
    	if (n == 2) {
@@ -146,12 +140,8 @@ float find_min_dist(Coordinate* points_arr, int n){
 
 	for (int i = 0; i < n-1; i++){
 		for (int l = i+1; l < n; l++){
-			//cout << "TIME " << k << endl;
-			//cout << "\n the two points passing in is : "<<points_arr[i].x <<"     "<< points_arr[i].y << endl;
-			//cout << "\n the two points passing in is : "<<points_arr[l].x <<"     "<< points_arr[l].y << endl;
 			curr_min = sqrtf( (pow((points_arr[i].x - points_arr[l].x) , 2) + pow((points_arr[i].y - points_arr[l].y) , 2 )) );
 			arr[k] = curr_min;
-			//cout << "arr[k] is " << arr[k]<< endl;
 			k++;			
 		}
 	}
@@ -161,18 +151,15 @@ float find_min_dist(Coordinate* points_arr, int n){
 
 	min = arr[0];
 	delete [] arr;	
-	cout << "EXIT FIND MIN DIST FUNCT \n";
 	return min;
 }
 
 float find_L(Coordinate *points_arr, int n) {
-	cout << "\nENTERED find_L(Coordinate *points_arr, int n)\n";
 	float L;
 	Coordinate *new_arr = new Coordinate[n];
 	merge_sort_x(points_arr, new_arr, 0, n-1);
 	L = points_arr[n/2].x;
 	delete[] new_arr;
-	cout << "EXIT find_L(Coordinate *points_arr, int n)\n";
 	return L;
 }
 
@@ -180,7 +167,6 @@ float find_L(Coordinate *points_arr, int n) {
  * line L
  */
 void split_array(Coordinate *points_arr, Coordinate *points_arr_left, Coordinate *points_arr_right, int n, int L) {
-	cout << "\nENTERED split_array\n";
 	
 	int left_iter = 0;
 	int right_iter = 0;
@@ -204,12 +190,10 @@ void split_array(Coordinate *points_arr, Coordinate *points_arr_left, Coordinate
 			right_iter++;
 		}
 	}
-	cout << "EXIT split_array\n";
 	
 }
 
 float closest_cross_pairs(Coordinate *M_y, float delta, int m) {
-	cout << "\nENTERED closest_cross_pairs\n";
 	float d_m = delta;
 	float d;
 	int i, j;
@@ -218,7 +202,6 @@ float closest_cross_pairs(Coordinate *M_y, float delta, int m) {
 	for (i = 0; i < m-1; i++) {
 		j = i + 1;
 		if(abs((M_y[j].y - M_y[i].y)) <= delta && j <= m) {
-			cout <<"\n\n\n\n\n";
 			d = sqrtf( (pow((M_y[i].x - M_y[j].x) , 2) + pow((M_y[i].y - M_y[j].y) , 2 )) );
 			d_m = min(d, d_m);
 			x = M_y[i];
@@ -228,72 +211,123 @@ float closest_cross_pairs(Coordinate *M_y, float delta, int m) {
 		}
 		
 	}
-	//cout << "\nd_m IS " << d_m << '\n';
-	cout << "EXIT closest_cross_pairs\n";
 	return d_m;
 }
 
+void split_y_array( Coordinate* left_of_x , Coordinate* sorted_by_y , int size, Coordinate* left_of_y, Coordinate* right_of_y){
+	int itera_right = 0 , itera_left = 0;
+	for(int i = 0; i < size; i++){
+		if(left_of_x[size/2-1].x < sorted_by_y[i].x ){
+			right_of_y[itera_right] = sorted_by_y[i];
+			itera_right++;
+		}
+		else{
+			left_of_y[itera_left] = sorted_by_y[i];
+			itera_left++;
+		}
 
-// MOVE THIS TO SOME NAIVE.CPP LATER
-float find_closest_pair(Coordinate *points_arr, int n) {
-	cout << "\nENTERED find_closest_pair\n";
+	}
+}
+
+float enhance_closest_pair(Coordinate *sorted_x , Coordinate*sorted_y, int n) {
 	float L, delta_1, delta_2, delta, d_m, minimum;
 	int j = 0;
 	// We know size of M_y must be smaller than total num of points.
 
 	if (n <= 3) {
-		//cout << "n is less than 3\n";
-		//cout << " n in if statement "<< n << endl;
-		/*for (int i = 0; i < n; i++) {
-			cout << "point (" << i << points_arr[i].x << ", " << points_arr[i].y <<")\n" ;
-		}*/
-		minimum = find_min_dist(points_arr, n);
-
-		//cout << "\nminimum in n<=3 base case" << minimum << endl;
+		minimum = find_min_dist(sorted_x , n);
 		return 	minimum ;
 	}
 
 	else {
-		//cout << "n is greater than 3\n";
+		L = find_L(sorted_x, n);
+
+		Coordinate *left_x = new Coordinate[n/2];
+		Coordinate *right_x;
+		if (n % 2 == 0) {
+			right_x = new Coordinate[n/2];
+		}
+		else {
+			right_x = new Coordinate[(n/2) + 1];
+		}
+		
+		
+		Coordinate *left_y = new Coordinate[n/2];
+		Coordinate *right_y;
+		if (n % 2 == 0) {
+			right_y = new Coordinate[n/2];
+		}
+		else {
+			right_y = new Coordinate[(n/2) + 1];
+		}
+
+		split_array(sorted_x , left_x, right_x, n, L);
+		split_y_array(left_x, sorted_y, n, left_y , right_y);
+		//cout << "\n\nBefore delta_1 \n\n";
+		delta_1 = enhance_closest_pair(left_x, left_y , n/2);
+		//cout << "\n\n\n After delta \n\n";
+		if (n % 2 == 0)
+			delta_2 = enhance_closest_pair(right_x,right_y, n/2);
+		else
+			delta_2 = enhance_closest_pair(right_x,right_y, (n/2+1));
+
+		delta = min(delta_1, delta_2);
+
+		int m = 0;
+		for (int i = 0; i < n; i++) {
+			if (abs(L - sorted_y[i].x) <= delta) {
+				m++;
+			}
+		}
+		Coordinate *M_y = new Coordinate[m];
+		for (int i = 0; i < n; i++) {
+			if (abs(L - sorted_y[i].x) <= delta) {
+				M_y[j] = sorted_y[i];
+				j++;
+			}
+		}
+			
+		d_m = closest_cross_pairs(M_y, delta, m);
+		/*
+		delete[]M_y;
+		delete[]left_x;
+		delete[]right_x;
+		delete[]left_y;
+		delete[]right_y;
+	*/	
+	return d_m;		
+	}
+}
+
+
+float naive_closest_pair(Coordinate *points_arr, int n) {
+	float L, delta_1, delta_2, delta, d_m, minimum;
+	int j = 0;
+	// We know size of M_y must be smaller than total num of points.
+
+	if (n <= 3) {
+		minimum = find_min_dist(points_arr, n);
+		return 	minimum ;
+	}
+
+	else {
 		L = find_L(points_arr, n);
-		//cout << "L is " << L << '\n';
 
 		Coordinate *points_arr_left = new Coordinate[n/2];
 		Coordinate *points_arr_right;
 		if (n % 2 == 0) {
-			//cout << n << " is even\n";
 			points_arr_right = new Coordinate[n/2];
 		}
 		else {
-			//cout << n << " is odd\n";
 			points_arr_right = new Coordinate[(n/2) + 1];
 		}
 
 		split_array(points_arr, points_arr_left, points_arr_right, n, L);
-/*
-		for (int a = 0; a<(n/2); a++){
-			cout << " array left side " << "(" << points_arr_left[a].x <<","<< points_arr_left[a].y << ")\n";
-
-		}
-		if (n % 2 == 0) {
-			for (int a = 0; a<(n/2); a++){
-				//cout << "\n\n IF \n\n";
-				cout << " array right side " << "(" << points_arr_right[a].x <<","<< points_arr_right[a].y << ")\n";
-	
-			}	
-		}
-		else {
-			for (int a = 0; a<(n/2 + 1); a++){
-				//cout << "\n\n ELSE \n\n";
-				cout << " array right side " << "(" << points_arr_right[a].x <<","<< points_arr_right[a].y << ")\n";
-	
-			}
-		}*/
-		delta_1 = find_closest_pair(points_arr_left, n/2);
+		delta_1 = naive_closest_pair(points_arr_left, n/2);
 		if (n % 2 == 0)
-			delta_2 = find_closest_pair(points_arr_right, n/2);
+			delta_2 = naive_closest_pair(points_arr_right, n/2);
 		else
-			delta_2 = find_closest_pair(points_arr_right, (n/2+1));
+			delta_2 = naive_closest_pair(points_arr_right, (n/2+1));
 
 		delta = min(delta_1, delta_2);
 
@@ -321,7 +355,6 @@ float find_closest_pair(Coordinate *points_arr, int n) {
 		
 		d_m = closest_cross_pairs(new_arr, delta, m);
 		delete[] new_arr;
-		cout << "EXIT find_closest_pair\n";
 		delete[]M_y;	
 		return d_m;
 		
@@ -358,3 +391,5 @@ Coordinate *sort_by_x_and_y(int size,Coordinate* line){
 	}
 	return sorting;
 }
+
+

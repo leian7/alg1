@@ -1,6 +1,7 @@
 #include "functions.cpp"
+
 int main(int argc, char* argv[]) {
-	int size,count = 1;
+	int size = 0, count = 0;
 	float min;
 	
 	ifstream f;
@@ -10,18 +11,24 @@ int main(int argc, char* argv[]) {
 		size++;
 	}
 	f.close();
-	Coordinate *line = new Coordinate [size];
-	
+	Coordinate *sorted_x = new Coordinate [size];
+	Coordinate *sorted_y = new Coordinate [size];
+	Coordinate *new_arr = new Coordinate[size];
+
 	f.open(argv[1]);
 
 	for(int i = 0; i < size; i++){
-		f >> line[i].x;
-		f >> line[i].y;	
+		f >> sorted_x[i].x;
+		f >> sorted_x[i].y;	
 	}
-	
-	min = naive_closest_pair(line, size);
-	ofstream out("output_divideandconquer.txt");
-	out << " Minimum : " << min << endl;	
+	f.close();
+
+	merge_sort_x(sorted_x, new_arr, 0, size-1);
+	merge_sort_y(new_arr, sorted_y, 0, size-1);
+
+	min = enhance_closest_pair(sorted_x,sorted_y, size);
+	ofstream out ("output_enhance_dnc.txt");
+	out << "Minimum : "<< min << endl;
 	set< pair<Coordinate,Coordinate> >::iterator it;
 	for(it=st.begin(); it!=st.end(); ++it){
 		//first is x, y is the second element in one point.
@@ -32,6 +39,6 @@ int main(int argc, char* argv[]) {
 	}
 	out<<"("<<st.begin()->first.x<<" "<<st.begin()->first.y<<")"<<"("<<st.begin()->second.x<<" "<<st.begin()->second.y<<")"<<endl;
 	out.close();
-	delete[]line;
+	delete[]sorted_x;
 	return 0;
 }
