@@ -2,7 +2,7 @@
 int main(int argc, char* argv[]) {
 	int size,count = 1;
 	float min;
-	
+
 	ifstream f;
 	f.open(argv[1]);
 	string pairs;
@@ -11,14 +11,19 @@ int main(int argc, char* argv[]) {
 	}
 	f.close();
 	Coordinate *line = new Coordinate [size];
-	
+
 	f.open(argv[1]);
 
 	for(int i = 0; i < size; i++){
 		f >> line[i].x;
 		f >> line[i].y;	
 	}
-	
+
+	/* Timing algorithm */
+	typedef struct timeval time;
+	time stop, start;
+	gettimeofday(&start, NULL);
+
 	min = naive_closest_pair(line, size);
 	ofstream out("output_divideandconquer.txt");
 	out << " Minimum : " << min << endl;	
@@ -30,6 +35,10 @@ int main(int argc, char* argv[]) {
 		}
 
 	}
+	gettimeofday(&stop, NULL);
+	cout << "micro: " << stop.tv_usec-start.tv_usec << endl;
+
+
 	out<<"("<<st.begin()->first.x<<" "<<st.begin()->first.y<<")"<<"("<<st.begin()->second.x<<" "<<st.begin()->second.y<<")"<<endl;
 	out.close();
 	delete[]line;

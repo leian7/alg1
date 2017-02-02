@@ -3,7 +3,7 @@
 int main(int argc, char* argv[]) {
 	int size = 0, count = 0;
 	float min;
-	
+
 	ifstream f;
 	f.open(argv[1]);
 	string pairs;
@@ -22,6 +22,10 @@ int main(int argc, char* argv[]) {
 		f >> sorted_x[i].y;	
 	}
 	f.close();
+	/* Timing algorithm */
+	typedef struct timeval time;
+	time stop, start;
+	gettimeofday(&start, NULL);
 
 	merge_sort_x(sorted_x, new_arr, 0, size-1);
 	merge_sort_y(new_arr, sorted_y, 0, size-1);
@@ -37,6 +41,9 @@ int main(int argc, char* argv[]) {
 		}
 
 	}
+	gettimeofday(&stop, NULL);
+	cout << "micro: " << stop.tv_usec-start.tv_usec << endl;
+
 	out<<"("<<st.begin()->first.x<<" "<<st.begin()->first.y<<")"<<"("<<st.begin()->second.x<<" "<<st.begin()->second.y<<")"<<endl;
 	out.close();
 	delete[]sorted_x;

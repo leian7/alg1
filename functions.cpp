@@ -1,30 +1,13 @@
 /* This file contains helper functions used by both the naive and enhanced
  * versions of the closest-pair algorithms. */
-
-/* list of var names
- * find_enhance_closest_pair
- * points_arr
- * n  <-- length of arr
- * find_min_dist
- * L
- * find_L
- * points_arr_left
- * points_arr_right
- * delta_1, delta_2, delta
- * M_y
- * merge_sort
- * d_m
- * closest_cross_pair
- * presort_y_c
- * presort_x_c
- * curr_min, min
-*/
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <algorithm>
 #include <cmath>
 #include <set>
+#include <cstdlib>
+#include <sys/time.h>
 using namespace std;
 
 struct Coordinate {

@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <cstdlib>
+#include <sys/time.h>
 using namespace std;
 
 struct Coordinate {
@@ -32,6 +34,12 @@ int main(int argc, char* argv[]) {
 		f >> points_arr[i].y;	
 	}
 	f.close();
+
+	/* Timing algorithm */
+	typedef struct timeval time;
+	time stop, start;
+	gettimeofday(&start, NULL);
+
 	for (int i = 0; i < size; i++) {
 		for (int j = i+1; j < size-1; j++) {
 			if (i == 0 && j == 1) {
@@ -46,6 +54,9 @@ int main(int argc, char* argv[]) {
 		}
 	}
 	
+	gettimeofday(&stop, NULL);
+		cout << "micro: " << stop.tv_usec-start.tv_usec << endl;
+
 	ofstream out("output_bruteforce.txt");	
 	out << min << endl;
 	out << pair[0].x << ", " << pair[0].y << " " << pair[1].x << ", " << pair[1].y << endl;
