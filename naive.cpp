@@ -1,10 +1,10 @@
 #include "functions.cpp"
-int main() {
+int main(int argc, char* argv[]) {
 	int size,count = 1;
 	float min;
 	
 	ifstream f;
-	f.open("example.input");
+	f.open(argv[1]);
 	string pairs;
 	while (getline(f, pairs)){
 		size++;
@@ -12,7 +12,7 @@ int main() {
 	f.close();
 	Coordinate *line = new Coordinate [size];
 	
-	f.open("example.input");
+	f.open(argv[1]);
 
 	for(int i = 0; i < size; i++){
 		f >> line[i].x;
