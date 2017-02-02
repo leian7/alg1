@@ -20,8 +20,8 @@ int main(int argc, char* argv[]) {
 	}
 	
 	min = naive_closest_pair(line, size);
-	cout << " Minimum : " << min << endl;	
-	//line = sort_by_x_and_y(size,line);
+	ofstream out("output_divideandconquer.txt");
+	out << " Minimum : " << min << endl;	
 	set< pair<Coordinate,Coordinate> >::iterator it;
 	for(it=st.begin(); it!=st.end(); ++it){
 		//first is x, y is the second element in one point.
@@ -30,10 +30,8 @@ int main(int argc, char* argv[]) {
 		}
 
 	}
-	for(int i=0; i < 1; i++){
-		cout<<"("<<st.begin()->first.x<<" "<<st.begin()->first.y<<")"<<"("<<st.begin()->second.x<<" "<<st.begin()->second.y<<")"<<endl;
-		count++;
-	}
+	out<<"("<<st.begin()->first.x<<" "<<st.begin()->first.y<<")"<<"("<<st.begin()->second.x<<" "<<st.begin()->second.y<<")"<<endl;
+	out.close();
 	delete[]line;
 	return 0;
 }

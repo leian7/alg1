@@ -27,8 +27,8 @@ int main(int argc, char* argv[]) {
 	merge_sort_y(new_arr, sorted_y, 0, size-1);
 
 	min = enhance_closest_pair(sorted_x,sorted_y, size);
-
-	cout << "Minimum : "<< min << endl;
+	ofstream out ("output_enhance_dnc.txt");
+	out << "Minimum : "<< min << endl;
 	set< pair<Coordinate,Coordinate> >::iterator it;
 	for(it=st.begin(); it!=st.end(); ++it){
 		//first is x, y is the second element in one point.
@@ -37,10 +37,8 @@ int main(int argc, char* argv[]) {
 		}
 
 	}
-	for(int i=0; i < 1; i++){
-		cout<<"("<<st.begin()->first.x<<" "<<st.begin()->first.y<<")"<<"("<<st.begin()->second.x<<" "<<st.begin()->second.y<<")"<<endl;
-		count++;
-	} 
+	out<<"("<<st.begin()->first.x<<" "<<st.begin()->first.y<<")"<<"("<<st.begin()->second.x<<" "<<st.begin()->second.y<<")"<<endl;
+	out.close();
 	delete[]sorted_x;
 	return 0;
 }
