@@ -55,7 +55,12 @@ int main(int argc, char* argv[]) {
 	}
 	
 	gettimeofday(&stop, NULL);
+	if(stop.tv_sec > start.tv_sec) {
+		cout << "seconds: " << stop.tv_sec-start.tv_sec << endl;
+	}
+	else {
 		cout << "micro: " << stop.tv_usec-start.tv_usec << endl;
+	}
 
 	ofstream out("output_bruteforce.txt");	
 	out << min << endl;

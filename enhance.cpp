@@ -10,7 +10,9 @@ int main(int argc, char* argv[]) {
 	while (getline(f, pairs)){
 		size++;
 	}
+	cout << "size is " << size << endl;
 	f.close();
+	cout << "allocate mem" << endl;
 	Coordinate *sorted_x = new Coordinate [size];
 	Coordinate *sorted_y = new Coordinate [size];
 	Coordinate *new_arr = new Coordinate[size];
@@ -18,16 +20,20 @@ int main(int argc, char* argv[]) {
 	f.open(argv[1]);
 
 	for(int i = 0; i < size; i++){
+//		cout << "in the for loop" << endl;
 		f >> sorted_x[i].x;
 		f >> sorted_x[i].y;	
 	}
+	cout << "out of for loop" << endl;
 	f.close();
 	/* Timing algorithm */
+	cout << "start timing" << endl;
 	typedef struct timeval time;
 	time stop, start;
 	gettimeofday(&start, NULL);
-
+	cout << "first merge x" << endl;
 	merge_sort_x(sorted_x, new_arr, 0, size-1);
+	cout << "first merge y" << endl;
 	merge_sort_y(new_arr, sorted_y, 0, size-1);
 
 	min = enhance_closest_pair(sorted_x,sorted_y, size);
@@ -47,5 +53,7 @@ int main(int argc, char* argv[]) {
 	out<<"("<<st.begin()->first.x<<" "<<st.begin()->first.y<<")"<<"("<<st.begin()->second.x<<" "<<st.begin()->second.y<<")"<<endl;
 	out.close();
 	delete[]sorted_x;
+	delete[]sorted_y;
+	delete[]new_arr;
 	return 0;
 }

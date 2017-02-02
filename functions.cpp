@@ -271,14 +271,13 @@ float enhance_closest_pair(Coordinate *sorted_x , Coordinate*sorted_y, int n) {
 		}
 			
 		d_m = closest_cross_pairs(M_y, delta, m);
-		/*
 		delete[]M_y;
 		delete[]left_x;
 		delete[]right_x;
 		delete[]left_y;
 		delete[]right_y;
-	*/	
-	return d_m;		
+
+		return d_m;		
 	}
 }
 
