@@ -20,9 +20,9 @@ int main(int argc, char* argv[]) {
 	}
 
 	/* Timing algorithm */
-	typedef struct timeval time;
+/*	typedef struct timeval time;
 	time stop, start;
-	gettimeofday(&start, NULL);
+	gettimeofday(&start, NULL); */
 
 	min = naive_closest_pair(line, size);
 	ofstream out("output_divideandconquer.txt");
@@ -35,8 +35,12 @@ int main(int argc, char* argv[]) {
 		}
 
 	}
-	gettimeofday(&stop, NULL);
-	cout << "micro: " << stop.tv_usec-start.tv_usec << endl;
+/*	gettimeofday(&stop, NULL);
+	if(stop.tv_sec > start.tv_sec) {
+		cout << "seconds: " << double(stop.tv_sec-start.tv_sec) << endl;
+	}
+	else {*/
+//	cout << "micro: " << double(stop.tv_usec-start.tv_usec) << endl;// } */
 
 
 	out<<"("<<st.begin()->first.x<<" "<<st.begin()->first.y<<")"<<"("<<st.begin()->second.x<<" "<<st.begin()->second.y<<")"<<endl;

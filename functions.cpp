@@ -208,7 +208,6 @@ void split_y_array( Coordinate* left_of_x , Coordinate* sorted_by_y , int size, 
 			left_of_y[itera_left] = sorted_by_y[i];
 			itera_left++;
 		}
-
 	}
 }
 
@@ -234,7 +233,7 @@ float enhance_closest_pair(Coordinate *sorted_x , Coordinate*sorted_y, int n) {
 			right_x = new Coordinate[(n/2) + 1];
 		}
 		
-		
+
 		Coordinate *left_y = new Coordinate[n/2];
 		Coordinate *right_y;
 		if (n % 2 == 0) {
@@ -246,9 +245,8 @@ float enhance_closest_pair(Coordinate *sorted_x , Coordinate*sorted_y, int n) {
 
 		split_array(sorted_x , left_x, right_x, n, L);
 		split_y_array(left_x, sorted_y, n, left_y , right_y);
-		//cout << "\n\nBefore delta_1 \n\n";
+		
 		delta_1 = enhance_closest_pair(left_x, left_y , n/2);
-		//cout << "\n\n\n After delta \n\n";
 		if (n % 2 == 0)
 			delta_2 = enhance_closest_pair(right_x,right_y, n/2);
 		else
@@ -271,11 +269,17 @@ float enhance_closest_pair(Coordinate *sorted_x , Coordinate*sorted_y, int n) {
 		}
 			
 		d_m = closest_cross_pairs(M_y, delta, m);
+
 		delete[]M_y;
 		delete[]left_x;
-		delete[]right_x;
+
+
+/*		delete[]right_x;
+		cout << "right_x deleted" << endl;
 		delete[]left_y;
+		cout << "left_y deleted" << endl;
 		delete[]right_y;
+		cout << "right_y deleted" << endl; */
 
 		return d_m;		
 	}
@@ -339,11 +343,7 @@ float naive_closest_pair(Coordinate *points_arr, int n) {
 		delete[] new_arr;
 		delete[]M_y;	
 		return d_m;
-		
-		
 	}
-	
-	
 }
 
 
@@ -373,5 +373,3 @@ Coordinate *sort_by_x_and_y(int size,Coordinate* line){
 	}
 	return sorting;
 }
-
-

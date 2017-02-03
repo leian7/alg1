@@ -36,9 +36,9 @@ int main(int argc, char* argv[]) {
 	f.close();
 
 	/* Timing algorithm */
-	typedef struct timeval time;
+/*	typedef struct timeval time;
 	time stop, start;
-	gettimeofday(&start, NULL);
+	gettimeofday(&start, NULL); */
 
 	for (int i = 0; i < size; i++) {
 		for (int j = i+1; j < size-1; j++) {
@@ -54,13 +54,13 @@ int main(int argc, char* argv[]) {
 		}
 	}
 	
-	gettimeofday(&stop, NULL);
+/* 	gettimeofday(&stop, NULL);
 	if(stop.tv_sec > start.tv_sec) {
 		cout << "seconds: " << stop.tv_sec-start.tv_sec << endl;
 	}
 	else {
 		cout << "micro: " << stop.tv_usec-start.tv_usec << endl;
-	}
+	} */
 
 	ofstream out("output_bruteforce.txt");	
 	out << min << endl;
