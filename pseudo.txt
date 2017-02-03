@@ -1,0 +1,98 @@
+BRUTE FORCE
+	for each point,
+		for each next point,
+			calc the distance
+				if it's less than the current min
+					assign as new min
+	return min
+
+
+NAIVE:
+
+naive_closest_pair(points_arr, num_points)
+	if num_points <= 3, 
+		minimum = find_min_dist(points_arr, num_points)
+	else
+		L = find_L(points_arr, num_points)
+		split_array(points_arr, points_arr_left, points_arr_right, num_points,
+		L)
+
+		delta_1 = naive_closest_pair(points_arr_left, n/2)
+		delta_2 = naive_closest_pair(points_arr_right, n/2)
+		delta = min(delta_1, delta_2);
+
+		for each point in M_y, 
+			if |L - point.x| <= delta,
+				add point to M_y
+
+		merge_sort_by_y(M_y, temp_arr, 0, num_points_in_M_y - 1)
+
+		d_m = closest_cross_pairs(M_y, delta, num_points_in_M_y)
+
+		return d_m
+
+
+ENHANCED:
+
+enhance_closest_pair(points_sorted_by_x, points_sorted_by_y, num_points)
+	if num_points <= 3, 
+		minimum = find_min_dist(points_sorted_by_x, num_points)
+	else
+		L = find_L(points_sorted_by_x, num_points)
+		split_array(points_sorted_by_x, left_x, right_x, num_points, L)
+		split_y_array(left_x, sorted_y, num_points, left_y, right_y)
+		
+		delta_1 = enhance_closest_pair(left_x, left_y, num_points/2)
+		delta_2 = enhance_closest_pair(right_x, right_y, num_points/2)
+		delta = min(delta_1, delta_2)
+
+		for each point in M_y, 
+			if |L - point.x| <= delta,
+				add point to M_y
+
+		d_m = closest_cross_pairs(M_y, delta, num_points_in_M_y)
+
+		return d_m
+
+
+UTILITY FUNCTIONS
+/* Finding the min dist: num points guaranteed to be 3 or 2 */
+find_min_dist(points_arr, num_points)
+	for each point in points_arr,
+		current_min = distance formula of current point and next point
+		if current_min is less than best min,
+			min = current_min
+	return min
+
+
+find_L(points_arr, num_points)
+	merge_sort_by_x(points_arr, temp_arr, 0, num_points - 1)
+	L = median x value
+	return L
+
+
+split_array(points_arr, points_arr_left, points_arr_right, num_points, L)
+	For each point starting from the start of points_arr to the middle point,
+		Populate points_arr_left with the point
+	For each point starting from the middle of points_arr to the ending point,
+		Populate points_arr_right with the point
+
+
+closest_cross_pairs(M_y, delta, size_of_M_y)
+	For each point in M_y,
+		if the y-distance between it and the next point is less than/equal to
+		delta and the next point is valid,
+			calculate the distance
+			if the new distance is smaller than the current smallest distance,
+				d_m = new distance
+	return d_m
+
+
+split_y_array(left_sorted_by_x, points_sorted_by_y, num_points,
+			  left_sorted_by_y, right_sorted_by_y)
+	for each point in the sorted_by_y array,
+		if the point's x value is greater than the left half of the
+		points_sorted_by_x's greatest x value,
+			stick the point in the right subarray for points_sorted_by_y
+		otherwise
+			put the point in the left subarray
